@@ -2,7 +2,7 @@ import { TodoItem, TodoProject } from './todoObjects.js';
 
 const DOMController = (() => {
 
-
+    const content = document.querySelector('.content');
 
     const ProjectsController = (() => {
         const projects = [];
@@ -23,6 +23,9 @@ const DOMController = (() => {
         const removeTodoFromProject = (projectIndex, todoIndex) => {
             getProjects()[projectIndex].removeTodo(todoIndex);
         }
+        const updateTitleOfProject = (title, index) => {
+            getProjects()[index].setTitle(title);
+        }
         const updateTodoOfProject = (title, description, dueDate, priority, notes, projectIndex, todoIndex) => {
             removeTodoFromProject(projectIndex, todoIndex);
             addTodoToProject(title, description, dueDate, priority, notes, projectIndex);
@@ -31,7 +34,9 @@ const DOMController = (() => {
             getProjects()[index].toggleSortMode();
         }
 
-        return { getProjects, addProject, removeProject, addTodoToProject, removeTodoFromProject, updateTodoOfProject, toggleSortModeOfProject };
+        return { getProjects, addProject, removeProject, addTodoToProject, removeTodoFromProject, updateTitleOfProject, updateTodoOfProject, toggleSortModeOfProject };
     })();
+
+
 
 })();
