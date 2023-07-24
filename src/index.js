@@ -23,8 +23,10 @@ const DOMController = (() => {
         const removeTodoFromProject = (projectIndex, todoIndex) => {
             getProjects()[projectIndex].removeTodo(todoIndex);
         }
-        const updateTitleOfProject = (title, index) => {
-            getProjects()[index].setTitle(title);
+        const updateDetailsOfProject = (title, description, index) => {
+            const targetProject = getProjects()[index];
+            targetProject.setTitle(title);
+            targetProject.setDescription(description);
         }
         const updateTodoOfProject = (title, description, dueDate, priority, notes, projectIndex, todoIndex) => {
             removeTodoFromProject(projectIndex, todoIndex);
@@ -34,7 +36,7 @@ const DOMController = (() => {
             getProjects()[index].toggleSortMode();
         }
 
-        return { getProjects, addProject, removeProject, addTodoToProject, removeTodoFromProject, updateTitleOfProject, updateTodoOfProject, toggleSortModeOfProject };
+        return { getProjects, addProject, removeProject, addTodoToProject, removeTodoFromProject, updateDetailsOfProject, updateTodoOfProject, toggleSortModeOfProject };
     })();
 
 
