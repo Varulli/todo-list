@@ -8,12 +8,13 @@ button {
     font-family: inherit;
 }
 
-.content {
+.project-view {
     display: flex;
     flex-wrap: wrap;
     gap: 2rem;
 }
 
-.content * {
+.project-card {
     border: 1px solid black;
+    max-width: 40rem;
 }
