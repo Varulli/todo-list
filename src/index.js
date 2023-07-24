@@ -13,6 +13,19 @@ const ProjectsController = (() => {
         projects.splice(index, 1);
         console.log(projects);
     }
+    const addTodoToProject = (title, description, dueDate, priority, notes, index) => {
+        getProjects()[index].addTodo(title, description, dueDate, priority, notes);
+    }
+    const removeTodoFromProject = (projectIndex, todoIndex) => {
+        getProjects()[projectIndex].removeTodo(todoIndex);
+    }
+    const updateTodoOfProject = (title, description, dueDate, priority, notes, projectIndex, todoIndex) => {
+        removeTodoFromProject(projectIndex, todoIndex);
+        addTodoToProject(title, description, dueDate, priority, notes, projectIndex);
+    }
+    const toggleSortModeOfProject = (index) => {
+        getProjects()[index].toggleSortMode();
+    }
 
-    return { addProject, removeProject, getProjects };
+    return { getProjects, addProject, removeProject, addTodoToProject, removeTodoFromProject, updateTodoOfProject, toggleSortModeOfProject };
 })();

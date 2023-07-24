@@ -53,7 +53,7 @@ function TodoProject(title) {
         todos.splice(index, 1);
     }
 
-    return { setTitle, addTodo, removeTodo, toggleSortMode, getTitle, getTodos, getSortMode };
+    return { getTitle, getTodos, getSortMode, setTitle, toggleSortMode, addTodo, removeTodo };
 }
 
 export { TodoItem, TodoProject };
