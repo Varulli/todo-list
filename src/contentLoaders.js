@@ -6,9 +6,7 @@ function clearContent() {
 }
 
 function loadProjects(projects) {
-    for (const project of projects) {
-        const projectWrapper
-    }
+
 }
 
 function loadProject(projects, index) {

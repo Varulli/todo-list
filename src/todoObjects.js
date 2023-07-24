@@ -17,15 +17,17 @@ function TodoItem(title, description, dueDate, priority, notes) {
     };
 }
 
-function TodoProject(title) {
+function TodoProject(title, description) {
     const todos = [];
     let sortMode = 'dueDate';
 
     const getTitle = () => title;
+    const getDescription = () => description;
     const getTodos = () => todos;
     const getSortMode = () => sortMode;
 
     const setTitle = (newTitle) => title = newTitle;
+    const setDescription = (newDescription) => description = newDescription;
     const toggleSortMode = () => {
         sortMode = sortMode === 'dueDate' ? 'priority' : 'dueDate';
         sortTodos();
@@ -53,7 +55,7 @@ function TodoProject(title) {
         todos.splice(index, 1);
     }
 
-    return { getTitle, getTodos, getSortMode, setTitle, toggleSortMode, addTodo, removeTodo };
+    return { getTitle, getDescription, getTodos, getSortMode, setTitle, setDescription, toggleSortMode, addTodo, removeTodo };
 }
 
 export { TodoItem, TodoProject };
