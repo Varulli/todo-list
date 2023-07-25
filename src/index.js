@@ -5,6 +5,8 @@ const DOMController = (() => {
 
     const createProjectButton = document.querySelector('.create-project-button');
     const content = document.querySelector('.content');
+    const projectDialog = document.querySelector('#project-dialog');
+    const todoDialog = document.querySelector('#todo-dialog');
 
     const ProjectsController = (() => {
         const projects = [];
@@ -41,7 +43,7 @@ const DOMController = (() => {
         return { getProjects, addProject, removeProject, addTodoToProject, removeTodoFromProject, updateDetailsOfProject, updateTodoOfProject, toggleSortModeOfProject };
     })();
 
-
+    createProjectButton.addEventListener('click', e => { projectDialog.showModal(); });
 
     // Test***
     // ---

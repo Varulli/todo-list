@@ -18,3 +18,14 @@ button {
     border: 1px solid black;
     max-width: 40rem;
 }
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+}
+
+.cancel-button {
+    align-self: flex-end;
+}
