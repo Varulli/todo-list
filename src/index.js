@@ -3,6 +3,7 @@ import { clearContent, loadProjects, loadProject } from './contentLoaders.js';
 
 const DOMController = (() => {
 
+    const createProjectButton = document.querySelector('.create-project-button');
     const content = document.querySelector('.content');
 
     const ProjectsController = (() => {
