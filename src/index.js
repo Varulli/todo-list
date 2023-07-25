@@ -1,4 +1,5 @@
 import { TodoItem, TodoProject } from './todoObjects.js';
+import { clearContent, loadProjects, loadProject } from './contentLoaders.js';
 
 const DOMController = (() => {
 
@@ -41,4 +42,10 @@ const DOMController = (() => {
 
 
 
+    // Test***
+    // ---
+    // ProjectsController.addProject('Yo-yo');
+    // ProjectsController.addTodoToProject('Flick down', '', new Date(2023, 5), 1, '', 0);
+    // loadProjects(ProjectsController.getProjects());
+    // ---
 })();

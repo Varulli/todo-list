@@ -11,9 +11,12 @@ function loadProjects(projects) {
     const projectView = document.createElement('div');
     projectView.classList.add('project-view');
 
-    for (const project of projects) {
+    for (let projectIndex = 0; projectIndex < projects.length; projectIndex++) {
+        const project = projects[projectIndex];
+
         const projectCard = document.createElement('button');
         projectCard.classList.add('project-card');
+        projectCard.dataset.projectIndex = projectIndex;
 
         const projectTitle = document.createElement('div');
         projectTitle.classList.add('project-title');
@@ -27,20 +30,25 @@ function loadProjects(projects) {
         projectCard.appendChild(projectDescription);
 
         const todos = project.getTodos();
-        if (todos.length > 0) {
-            const preview = document.createElement('ol');
-            preview.classList.add('preview');
+        const preview = document.createElement('ol');
+        preview.classList.add('preview');
 
-            const limit = todos.length > 3 ? 3 : todos.length;
-            for (let i = 0; i < limit; i++) {
-                const previewItem = document.createElement('li');
-                previewItem.classList.add('preview-item');
-                previewItem.textContent = todos[i].getTitle();
-                preview.appendChild(previewItem);
-            }
+        const limit = Math.min(todos.length, 3);
+        for (let todoIndex = 0; todoIndex < limit; todoIndex++) {
+            const previewTodo = document.createElement('li');
+            previewTodo.classList.add('preview-todo');
+            previewTodo.dataset.todoIndex = todoIndex;
+            previewTodo.textContent = todos[todoIndex].getTitle();
 
-            projectCard.appendChild(preview);
+            const divider = document.createElement('div');
+            divider.classList.add('divider');
+
+            preview.appendChild(previewTodo);
+            if (todoIndex + 1 !== limit)
+                preview.appendChild(divider);
         }
+
+        projectCard.appendChild(preview);
 
         projectView.appendChild(projectCard);
     }
