@@ -6,8 +6,21 @@ const DOMController = (() => {
 
     const createProjectButton = document.querySelector('.create-project-button');
     const content = document.querySelector('.content');
+
     const projectDialog = document.querySelector('#project-dialog');
     const todoDialog = document.querySelector('#todo-dialog');
+
+    const projectSubmitButton = document.querySelector('.project.submit-button');
+    const todoSubmitButton = document.querySelector('.todo.submit-button');
+
+    const projectTitleBox = document.querySelector('#project-title');
+    const projectDescriptionBox = document.querySelector('#project-description');
+
+    const todoTitleBox = document.querySelector('#todo-title');
+    const todoDescriptionBox = document.querySelector('#todo-description');
+    const todoDueDateBox = document.querySelector('#todo-due-date');
+    const todoPriorityBox = document.querySelector('#todo-priority');
+    const todoNotesBox = document.querySelector('#todo-notes');
 
     const ProjectsController = (() => {
         const projects = [];
@@ -45,11 +58,8 @@ const DOMController = (() => {
     })();
 
     createProjectButton.addEventListener('click', e => { projectDialog.showModal(); });
+    projectSubmitButton.addEventListener('click', e => {
 
-    // Test***
-    // ---
-    // ProjectsController.addProject('Yo-yo');
-    // ProjectsController.addTodoToProject('Flick down', '', new Date(2023, 5), 1, '', 0);
-    // loadProjects(ProjectsController.getProjects());
-    // ---
+    });
+
 })();
