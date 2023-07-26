@@ -3,6 +3,10 @@
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
+body {
+    margin: 0;
+}
+
 button {
     font-size: inherit;
     font-family: inherit;

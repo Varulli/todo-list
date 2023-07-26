@@ -1,3 +1,4 @@
+import './style.css';
 import { TodoItem, TodoProject } from './todoObjects.js';
 import { clearContent, loadProjects, loadProject } from './contentLoaders.js';
 
