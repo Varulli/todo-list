@@ -12,6 +12,7 @@ const DOMController = (() => {
 
     const projectSubmitButton = document.querySelector('.project.submit-button');
     const todoSubmitButton = document.querySelector('.todo.submit-button');
+    // const cancelButton = doc
 
     const projectTitleBox = document.querySelector('#project-title');
     const projectDescriptionBox = document.querySelector('#project-description');
@@ -27,13 +28,13 @@ const DOMController = (() => {
 
         const getProjects = () => projects;
 
-        const addProject = (title) => {
-            projects.push(TodoProject(title));
-            console.log(projects);
+        const addProject = (title, description) => {
+            projects.push(TodoProject(title, description));
+            // console.log(projects);
         }
         const removeProject = (index) => {
             projects.splice(index, 1);
-            console.log(projects);
+            // console.log(projects);
         }
         const addTodoToProject = (title, description, dueDate, priority, notes, index) => {
             getProjects()[index].addTodo(title, description, dueDate, priority, notes);
@@ -59,7 +60,11 @@ const DOMController = (() => {
 
     createProjectButton.addEventListener('click', e => { projectDialog.showModal(); });
     projectSubmitButton.addEventListener('click', e => {
-
+        ProjectsController.addProject(projectTitleBox.value, projectDescriptionBox.value);
+        loadProjects(ProjectsController.getProjects());
     });
+
+    ProjectsController.addProject('Default Project', '');
+    loadProjects(ProjectsController.getProjects());
 
 })();

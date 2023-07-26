@@ -12,6 +12,10 @@ button {
     font-family: inherit;
 }
 
+.content {
+    padding: 1rem;
+}
+
 .project-view {
     display: flex;
     flex-wrap: wrap;
@@ -20,7 +24,25 @@ button {
 
 .project-card {
     border: 1px solid black;
-    max-width: 40rem;
+    border-radius: .5rem;
+    padding: .5rem;
+    width: 100%;
+    height: 100%;
+    max-width: 10rem;
+    max-height: 12rem;
+    background-color: white;
+}
+
+.project-card:hover {
+    background-color: rgb(240, 240, 240);
+}
+
+.project-card:active {
+    background-color: white;
+}
+
+.project-description {
+    overflow-wrap: break-word;
 }
 
 dialog {
