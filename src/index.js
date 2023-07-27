@@ -1,7 +1,7 @@
 import './style.css';
-import { TodoItem, TodoProject } from './todoObjects.js';
-import { clearContent, loadProjects, loadProject } from './contentLoaders.js';
-import { clearButtonBar, loadNewProjectButton, loadNewTodoButton } from './buttonBarLoaders.js';
+import { TodoItem, TodoProject } from './todoObjects';
+import { clearContent, loadProjects, loadProject } from './contentLoaders';
+import { clearButtonBar, loadNewProjectButton, loadNewTodoButton } from './buttonBarLoaders';
 
 const DOMController = (() => {
 
@@ -52,8 +52,6 @@ const DOMController = (() => {
 
         return { getProjects, addProject, removeProject, addTodoToProject, removeTodoFromProject, updateDetailsOfProject, updateTodoOfProject, toggleSortModeOfProject };
     })();
-
-    loadNewProjectButton();
 
     projectSubmitButton.addEventListener('click', e => {
         if (projectTitleBox.checkValidity()) {

@@ -1,4 +1,5 @@
 const buttonBar = document.querySelector('.button-bar');
+const backButton = document.querySelector('.back-button');
 
 const projectDialog = document.querySelector('#project-dialog');
 const todoDialog = document.querySelector('#todo-dialog');
@@ -9,6 +10,8 @@ function clearButtonBar() {
 }
 
 function loadNewProjectButton() {
+    clearButtonBar();
+
     const newProjectButton = document.createElement('button');
     newProjectButton.classList.add('new-project-button');
     newProjectButton.textContent = "New Project";
@@ -17,6 +20,8 @@ function loadNewProjectButton() {
 }
 
 function loadNewTodoButton() {
+    clearButtonBar();
+
     const newTodoButton = document.createElement('button');
     newTodoButton.classList.add('new-todo-button');
     newTodoButton.textContent = "New Todo";
@@ -24,4 +29,8 @@ function loadNewTodoButton() {
     buttonBar.appendChild(newTodoButton);
 }
 
-export { clearButtonBar, loadNewProjectButton, loadNewTodoButton };
+function setBackButtonDisabled(value) {
+    backButton.disabled = value;
+}
+
+export { clearButtonBar, loadNewProjectButton, loadNewTodoButton, setBackButtonDisabled };
