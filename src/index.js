@@ -1,18 +1,13 @@
 import './style.css';
 import { TodoItem, TodoProject } from './todoObjects.js';
 import { clearContent, loadProjects, loadProject } from './contentLoaders.js';
+import { clearButtonBar, loadNewProjectButton, loadNewTodoButton } from './buttonLoaders.js';
 
 const DOMController = (() => {
 
-    const createProjectButton = document.querySelector('.create-project-button');
-    const content = document.querySelector('.content');
-
-    const projectDialog = document.querySelector('#project-dialog');
-    const todoDialog = document.querySelector('#todo-dialog');
-
     const projectSubmitButton = document.querySelector('.project.submit-button');
     const todoSubmitButton = document.querySelector('.todo.submit-button');
-    // const cancelButton = doc
+    const cancelButton = document.querySelector('cancel-button');
 
     const projectTitleBox = document.querySelector('#project-title');
     const projectDescriptionBox = document.querySelector('#project-description');
@@ -58,7 +53,8 @@ const DOMController = (() => {
         return { getProjects, addProject, removeProject, addTodoToProject, removeTodoFromProject, updateDetailsOfProject, updateTodoOfProject, toggleSortModeOfProject };
     })();
 
-    createProjectButton.addEventListener('click', e => { projectDialog.showModal(); });
+    loadNewProjectButton();
+
     projectSubmitButton.addEventListener('click', e => {
         ProjectsController.addProject(projectTitleBox.value, projectDescriptionBox.value);
         loadProjects(ProjectsController.getProjects());
