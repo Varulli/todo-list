@@ -1,7 +1,7 @@
 import './style.css';
 import { TodoItem, TodoProject } from './todoObjects.js';
 import { clearContent, loadProjects, loadProject } from './contentLoaders.js';
-import { clearButtonBar, loadNewProjectButton, loadNewTodoButton } from './buttonLoaders.js';
+import { clearButtonBar, loadNewProjectButton, loadNewTodoButton } from './buttonBarLoaders.js';
 
 const DOMController = (() => {
 
