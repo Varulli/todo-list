@@ -56,8 +56,10 @@ const DOMController = (() => {
     loadNewProjectButton();
 
     projectSubmitButton.addEventListener('click', e => {
-        ProjectsController.addProject(projectTitleBox.value, projectDescriptionBox.value);
-        loadProjects(ProjectsController.getProjects());
+        if (projectTitleBox.checkValidity()) {
+            ProjectsController.addProject(projectTitleBox.value, projectDescriptionBox.value);
+            loadProjects(ProjectsController.getProjects());
+        }
     });
 
     ProjectsController.addProject('Default Project', '');
