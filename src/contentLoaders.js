@@ -1,6 +1,7 @@
 import { loadNewProjectButton, loadNewTodoButton, setBackButtonDisabled } from "./buttonBarLoaders";
 
 const content = document.querySelector('.content');
+let currProjectIndex;
 
 function clearContent() {
     while (content.hasChildNodes())
@@ -52,7 +53,10 @@ function loadProjects(projects) {
                 preview.appendChild(divider);
         }
 
-        projectCard.addEventListener('click', e => { loadProject(project); });
+        projectCard.addEventListener('click', e => {
+            currProjectIndex = e.target.dataset.projectIndex;
+            loadProject(project);
+        });
 
         projectCard.appendChild(preview);
 
@@ -67,11 +71,21 @@ function loadProject(project) {
     loadNewTodoButton();
     setBackButtonDisabled(false);
 
-    const titleField = document.createElement('div');
+    const projectDetails = document.createElement('div');
+
+    const titleArea = document.createElement('div');
     const titleLabel = document.createElement('label');
     const titleBox = document.createElement('input');
 
-    titleLabel.textContent = "Title: "
+    const descriptionArea = document.createElement('div');
+    const descriptionLabel = document.createElement('label');
+    const descriptionBox = document.createElement('textarea');
+
+    projectDetails.classList.add('project-details');
+
+    titleArea.classList.add('title-area');
+
+    titleLabel.textContent = "Title:"
     titleLabel.htmlFor = "title-box";
 
     titleBox.value = project.getTitle();
@@ -79,7 +93,19 @@ function loadProject(project) {
     titleBox.id = "title-box";
     titleBox.addEventListener('input', e => { project.setTitle(titleBox.value); });
 
+    descriptionArea.classList.add('description-area');
+
+    descriptionLabel.textContent = "Description:";
+    descriptionLabel.htmlFor = "desription-box";
+
+    descriptionBox.value = project.getDescription();
+    descriptionBox.name = "description-box";
+    descriptionBox.id = "description-box";
+    descriptionBox.addEventListener('input', e => { project.setDescription(descriptionBox.value); });
+
     const todoList = document.createElement('ol');
+    todoList.classList.add('todo-list');
+
     const todos = project.getTodos();
     for (let todoIndex = 0; todoIndex < todos.length; todoIndex++) {
         const todoWrapper = document.createElement('li');
@@ -97,20 +123,34 @@ function loadProject(project) {
         todoDescription.textContent = todos[todoIndex].getDescription();
         todoDescription.classList.add('todo-description');
 
+        const todoDueDate = document.createElement('div');
+        const date = todos[todoIndex].getDueDate();
+        todoDueDate.textContent = `${date.getMonth()}/${date.getDate()}/${date.getFullYear()}`;
+
         const divider = document.createElement('div');
         divider.classList.add('divider');
 
         todo.appendChild(todoTitle);
         todo.appendChild(todoDescription);
+        todo.appendChild(todoDueDate);
 
-        todoList.appendChild(todo);
+        todoWrapper.appendChild(todo);
+        todoList.appendChild(todoWrapper);
         if (todoIndex + 1 !== todos.length)
-            preview.appendChild(divider);
+            todoList.appendChild(divider);
     }
 
-    titleField.appendChild(titleLabel);
-    titleField.appendChild(titleBox);
-    content.appendChild(titleField);
+    titleArea.appendChild(titleLabel);
+    titleArea.appendChild(titleBox);
+
+    descriptionArea.appendChild(descriptionLabel);
+    descriptionArea.appendChild(descriptionBox);
+
+    projectDetails.appendChild(titleArea);
+    projectDetails.appendChild(descriptionArea);
+    projectDetails.appendChild(todoList);
+
+    content.appendChild(projectDetails);
 }
 
-export { clearContent, loadProjects, loadProject };
+export { clearContent, loadProjects, loadProject, currProjectIndex };

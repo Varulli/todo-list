@@ -1,13 +1,23 @@
 import './style.css';
 import { TodoItem, TodoProject } from './todoObjects';
-import { clearContent, loadProjects, loadProject } from './contentLoaders';
+import { clearContent, loadProjects, loadProject, currProjectIndex } from './contentLoaders';
 import { clearButtonBar, loadNewProjectButton, loadNewTodoButton } from './buttonBarLoaders';
 
 const DOMController = (() => {
 
+    const backButton = document.querySelector('.back-button');
+
+    const projectDialog = document.querySelector('#project-dialog');
+    const todoDialog = document.querySelector('#todo-dialog');
+
+    const projectForm = document.querySelector('#project-dialog form');
+    const todoForm = document.querySelector('#todo-dialog form');
+
     const projectSubmitButton = document.querySelector('.project.submit-button');
     const todoSubmitButton = document.querySelector('.todo.submit-button');
-    const cancelButton = document.querySelector('cancel-button');
+
+    const projectCancelButton = document.querySelector('#project-dialog form .cancel-button');
+    const todoCancelButton = document.querySelector('#todo-dialog form .cancel-button');
 
     const projectTitleBox = document.querySelector('#project-title');
     const projectDescriptionBox = document.querySelector('#project-description');
@@ -25,11 +35,9 @@ const DOMController = (() => {
 
         const addProject = (title, description) => {
             projects.push(TodoProject(title, description));
-            // console.log(projects);
         }
         const removeProject = (index) => {
             projects.splice(index, 1);
-            // console.log(projects);
         }
         const addTodoToProject = (title, description, dueDate, priority, notes, index) => {
             getProjects()[index].addTodo(title, description, dueDate, priority, notes);
@@ -53,12 +61,24 @@ const DOMController = (() => {
         return { getProjects, addProject, removeProject, addTodoToProject, removeTodoFromProject, updateDetailsOfProject, updateTodoOfProject, toggleSortModeOfProject };
     })();
 
+    backButton.addEventListener('click', e => { loadProjects(ProjectsController.getProjects()); });
+
     projectSubmitButton.addEventListener('click', e => {
-        if (projectTitleBox.checkValidity()) {
+        if (projectForm.checkValidity()) {
             ProjectsController.addProject(projectTitleBox.value, projectDescriptionBox.value);
             loadProjects(ProjectsController.getProjects());
         }
     });
+
+    todoSubmitButton.addEventListener('click', e => {
+        if (todoForm.checkValidity()) {
+            ProjectsController.addTodoToProject(todoTitleBox.value, todoDescriptionBox.value, new Date(todoDueDateBox.value), todoPriorityBox.value, todoNotesBox.value, currProjectIndex);
+            loadProject(ProjectsController.getProjects()[currProjectIndex]);
+        }
+    });
+
+    projectCancelButton.addEventListener('click', e => { projectDialog.close(); });
+    todoCancelButton.addEventListener('click', e => { todoDialog.close(); });
 
     ProjectsController.addProject('Default Project', '');
     loadProjects(ProjectsController.getProjects());
