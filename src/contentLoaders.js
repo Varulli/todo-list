@@ -114,6 +114,7 @@ function loadProject(project) {
         const todo = document.createElement('button');
         todo.classList.add('todo');
         todo.dataset.todoIndex = todoIndex;
+        todo.addEventListener('click', openTodoForm(todos[todoIndex]));
 
         const todoTitle = document.createElement('div');
         todoTitle.textContent = todos[todoIndex].getTitle();
@@ -151,6 +152,10 @@ function loadProject(project) {
     projectDetails.appendChild(todoList);
 
     content.appendChild(projectDetails);
+}
+
+function openTodoForm(todo) {
+
 }
 
 export { clearContent, loadProjects, loadProject, currProjectIndex };
