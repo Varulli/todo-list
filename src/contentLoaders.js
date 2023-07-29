@@ -38,11 +38,10 @@ function loadProjects(projects) {
         const preview = document.createElement('ol');
         preview.classList.add('preview');
 
-        const limit = Math.min(todos.length, 3);
+        const limit = Math.min(todos.length, 5);
         for (let todoIndex = 0; todoIndex < limit; todoIndex++) {
             const previewTodo = document.createElement('li');
             previewTodo.classList.add('preview-todo');
-            previewTodo.dataset.todoIndex = todoIndex;
             previewTodo.textContent = todos[todoIndex].getTitle();
 
             const divider = document.createElement('div');
@@ -54,7 +53,8 @@ function loadProjects(projects) {
         }
 
         projectCard.addEventListener('click', e => {
-            currProjectIndex = e.target.dataset.projectIndex;
+            currProjectIndex = projectCard.dataset.projectIndex;
+            console.log(currProjectIndex);
             loadProject(project);
         });
 
