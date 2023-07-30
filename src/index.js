@@ -73,6 +73,7 @@ const DOMController = (() => {
 
     function loadProjects(projects) {
         clearContent();
+        clearButtonBar();
         loadNewProjectButton();
         setBackButtonDisabled(true);
 
@@ -130,7 +131,9 @@ const DOMController = (() => {
 
     function loadProject(project) {
         clearContent();
+        clearButtonBar();
         loadNewTodoButton();
+        loadToggleSortButton();
         setBackButtonDisabled(false);
 
         const projectDetails = document.createElement('div');
@@ -170,37 +173,45 @@ const DOMController = (() => {
 
         const todos = project.getTodos();
         for (let todoIndex = 0; todoIndex < todos.length; todoIndex++) {
+            const todo = todos[todoIndex];
+
             const todoWrapper = document.createElement('li');
             todoWrapper.classList.add('todo-wrapper');
 
-            const todo = document.createElement('button');
-            todo.classList.add('todo');
-            todo.dataset.todoIndex = todoIndex;
-            todo.addEventListener('click', e => {
-                openTodoForm(todos[todoIndex]);
+            const todoElement = document.createElement('button');
+            todoElement.classList.add('todo');
+            todoElement.dataset.todoIndex = todoIndex;
+            todoElement.addEventListener('click', e => {
+                openTodoForm(todo);
                 ProjectsController.removeTodoFromProject(currProjectIndex, todoIndex);
             });
 
             const todoTitle = document.createElement('div');
-            todoTitle.textContent = todos[todoIndex].getTitle();
+            todoTitle.textContent = todo.getTitle();
             todoTitle.classList.add('todo-title');
 
             const todoDescription = document.createElement('div');
-            todoDescription.textContent = todos[todoIndex].getDescription();
+            todoDescription.textContent = todo.getDescription();
             todoDescription.classList.add('todo-description');
 
             const todoDueDate = document.createElement('div');
-            const date = todos[todoIndex].getDueDate();
+            const date = todo.getDueDate();
             todoDueDate.textContent = `${date.getMonth() + 1}/${date.getDate() + 1}/${date.getFullYear()}`;
+            todoDueDate.classList.add('todo-due-date');
+
+            const todoPriority = document.createElement('div');
+            todoPriority.textContent = todo.getPriority();
+            todoPriority.classList.add('todo-priority');
 
             const divider = document.createElement('div');
             divider.classList.add('divider');
 
-            todo.appendChild(todoTitle);
-            todo.appendChild(todoDescription);
-            todo.appendChild(todoDueDate);
+            todoElement.appendChild(todoTitle);
+            todoElement.appendChild(todoDescription);
+            todoElement.appendChild(todoDueDate);
+            todoElement.appendChild(todoPriority);
 
-            todoWrapper.appendChild(todo);
+            todoWrapper.appendChild(todoElement);
             todoList.appendChild(todoWrapper);
             if (todoIndex + 1 !== todos.length)
                 todoList.appendChild(divider);
@@ -234,8 +245,6 @@ const DOMController = (() => {
     }
 
     function loadNewProjectButton() {
-        clearButtonBar();
-
         const newProjectButton = document.createElement('button');
         newProjectButton.classList.add('new-project-button');
         newProjectButton.textContent = "New Project";
@@ -244,13 +253,23 @@ const DOMController = (() => {
     }
 
     function loadNewTodoButton() {
-        clearButtonBar();
-
         const newTodoButton = document.createElement('button');
         newTodoButton.classList.add('new-todo-button');
         newTodoButton.textContent = "New Todo";
         newTodoButton.addEventListener('click', e => { todoDialog.showModal(); });
         buttonBar.appendChild(newTodoButton);
+    }
+
+    function loadToggleSortButton() {
+        const toggleSortButton = document.createElement('button');
+        toggleSortButton.classList.add('toggle-sort-button');
+        toggleSortButton.textContent = "Toggle Sort";
+        toggleSortButton.addEventListener('click', e => {
+            ProjectsController.toggleSortModeOfProject(currProjectIndex);
+            loadProject(ProjectsController.getProjects()[currProjectIndex]);
+
+        });
+        buttonBar.appendChild(toggleSortButton);
     }
 
     function setBackButtonDisabled(value) {
