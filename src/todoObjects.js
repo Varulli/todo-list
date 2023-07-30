@@ -25,6 +25,7 @@ function TodoProject(title, description) {
     const getDescription = () => description;
     const getTodos = () => todos;
     const getSortMode = () => sortMode;
+    const getNumTodos = () => todos.length;
 
     const setTitle = (newTitle) => title = newTitle;
     const setDescription = (newDescription) => description = newDescription;
@@ -55,7 +56,7 @@ function TodoProject(title, description) {
         todos.splice(index, 1);
     }
 
-    return { getTitle, getDescription, getTodos, getSortMode, setTitle, setDescription, toggleSortMode, addTodo, removeTodo };
+    return { getTitle, getDescription, getTodos, getSortMode, setTitle, setDescription, toggleSortMode, addTodo, removeTodo, getNumTodos };
 }
 
 export { TodoItem, TodoProject };

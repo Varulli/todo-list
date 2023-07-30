@@ -45,13 +45,13 @@ const DOMController = (() => {
             projects.splice(index, 1);
         }
         const addTodoToProject = (title, description, dueDate, priority, notes, index) => {
-            getProjects()[index].addTodo(title, description, dueDate, priority, notes);
+            projects[index].addTodo(title, description, dueDate, priority, notes);
         }
         const removeTodoFromProject = (projectIndex, todoIndex) => {
-            getProjects()[projectIndex].removeTodo(todoIndex);
+            projects[projectIndex].removeTodo(todoIndex);
         }
         const updateDetailsOfProject = (title, description, index) => {
-            const targetProject = getProjects()[index];
+            const targetProject = projects[index];
             targetProject.setTitle(title);
             targetProject.setDescription(description);
         }
@@ -60,10 +60,57 @@ const DOMController = (() => {
             addTodoToProject(title, description, dueDate, priority, notes, projectIndex);
         }
         const toggleSortModeOfProject = (index) => {
-            getProjects()[index].toggleSortMode();
+            projects[index].toggleSortMode();
         }
 
-        return { getProjects, addProject, removeProject, addTodoToProject, removeTodoFromProject, updateDetailsOfProject, updateTodoOfProject, toggleSortModeOfProject };
+        const saveProjects = () => {
+            const numProjects = projects.length;
+            localStorage.setItem('numProjects', numProjects);
+
+            for (let projectIndex = 0; projectIndex < numProjects; projectIndex++) {
+                const project = projects[projectIndex];
+
+                localStorage.setItem(`project${projectIndex}Title`, project.getTitle());
+                localStorage.setItem(`project${projectIndex}Description`, project.getDescription());
+
+                const numTodos = project.getNumTodos();
+                localStorage.setItem(`project${projectIndex}NumTodos`, numTodos);
+
+                const todos = project.getTodos();
+                for (let todoIndex = 0; todoIndex < numTodos; todoIndex++) {
+                    const todo = todos[todoIndex];
+
+                    localStorage.setItem(`project${projectIndex}Todo${todoIndex}Title`, todo.getTitle());
+                    localStorage.setItem(`project${projectIndex}Todo${todoIndex}Description`, todo.getDescription());
+                    localStorage.setItem(`project${projectIndex}Todo${todoIndex}DueDate`, todo.getDueDate().toISOString());
+                    localStorage.setItem(`project${projectIndex}Todo${todoIndex}Priority`, todo.getPriority());
+                    localStorage.setItem(`project${projectIndex}Todo${todoIndex}Notes`, todo.getNotes());
+                }
+            }
+        }
+
+        const loadProjects = () => {
+            const numProjects = localStorage.getItem('numProjects');
+
+            for (let projectIndex = 0; projectIndex < numProjects; projectIndex++) {
+                const projectTitle = localStorage.getItem(`project${projectIndex}Title`);
+                const projectDescription = localStorage.getItem(`project${projectIndex}Description`);
+                addProject(projectTitle, projectDescription);
+
+                const numTodos = localStorage.getItem(`project${projectIndex}NumTodos`);
+                for (let todoIndex = 0; todoIndex < numTodos; todoIndex++) {
+                    const todoTitle = localStorage.getItem(`project${projectIndex}Todo${todoIndex}Title`);
+                    const todoDescription = localStorage.getItem(`project${projectIndex}Todo${todoIndex}Description`);
+                    const todoDueDate = localStorage.getItem(`project${projectIndex}Todo${todoIndex}DueDate`);
+                    const todoPriority = localStorage.getItem(`project${projectIndex}Todo${todoIndex}Priority`);
+                    const todoNotes = localStorage.getItem(`project${projectIndex}Todo${todoIndex}Notes`);
+
+                    addTodoToProject(todoTitle, todoDescription, new Date(todoDueDate), todoPriority, todoNotes, projectIndex);
+                }
+            }
+        }
+
+        return { getProjects, addProject, removeProject, addTodoToProject, removeTodoFromProject, updateDetailsOfProject, updateTodoOfProject, toggleSortModeOfProject, saveProjects, loadProjects };
     })();
 
     function clearContent() {
@@ -156,7 +203,10 @@ const DOMController = (() => {
         titleBox.value = project.getTitle();
         titleBox.name = "title-box";
         titleBox.id = "title-box";
-        titleBox.addEventListener('input', e => { project.setTitle(titleBox.value); });
+        titleBox.addEventListener('input', e => {
+            ProjectsController.updateDetailsOfProject(titleBox.value, descriptionBox.value, currProjectIndex);
+            ProjectsController.saveProjects();
+        });
 
         descriptionArea.classList.add('description-area');
 
@@ -166,7 +216,10 @@ const DOMController = (() => {
         descriptionBox.value = project.getDescription();
         descriptionBox.name = "description-box";
         descriptionBox.id = "description-box";
-        descriptionBox.addEventListener('input', e => { project.setDescription(descriptionBox.value); });
+        descriptionBox.addEventListener('input', e => {
+            ProjectsController.updateDetailsOfProject(titleBox.value, descriptionBox.value, currProjectIndex);
+            ProjectsController.saveProjects();
+        });
 
         const todoList = document.createElement('ol');
         todoList.classList.add('todo-list');
@@ -183,7 +236,10 @@ const DOMController = (() => {
             todoElement.dataset.todoIndex = todoIndex;
             todoElement.addEventListener('click', e => {
                 openTodoForm(todo);
-                ProjectsController.removeTodoFromProject(currProjectIndex, todoIndex);
+                todoSubmitButton.addEventListener('click', e => {
+                    ProjectsController.removeTodoFromProject(currProjectIndex, todoIndex);
+                    ProjectsController.saveProjects();
+                }, { once: true });
             });
 
             const todoTitle = document.createElement('div');
@@ -197,6 +253,7 @@ const DOMController = (() => {
             const todoDueDate = document.createElement('div');
             const date = todo.getDueDate();
             todoDueDate.textContent = `${date.getMonth() + 1}/${date.getDate() + 1}/${date.getFullYear()}`;
+            todoDueDate.textContent = date.toISOString().slice(0, 10);
             todoDueDate.classList.add('todo-due-date');
 
             const todoPriority = document.createElement('div');
@@ -284,6 +341,7 @@ const DOMController = (() => {
     projectSubmitButton.addEventListener('click', e => {
         if (projectForm.checkValidity()) {
             ProjectsController.addProject(projectTitleBox.value, projectDescriptionBox.value);
+            ProjectsController.saveProjects();
             loadProjects(ProjectsController.getProjects());
         }
     });
@@ -291,6 +349,7 @@ const DOMController = (() => {
     todoSubmitButton.addEventListener('click', e => {
         if (todoForm.checkValidity()) {
             ProjectsController.addTodoToProject(todoTitleBox.value, todoDescriptionBox.value, new Date(todoDueDateBox.value), todoPriorityBox.value, todoNotesBox.value, currProjectIndex);
+            ProjectsController.saveProjects();
             loadProject(ProjectsController.getProjects()[currProjectIndex]);
         }
     });
@@ -298,7 +357,12 @@ const DOMController = (() => {
     projectCancelButton.addEventListener('click', e => { projectDialog.close(); });
     todoCancelButton.addEventListener('click', e => { todoDialog.close(); });
 
-    ProjectsController.addProject('Default Project', '');
+    if (!localStorage.getItem('pageHasLoadedBefore')) {
+        ProjectsController.addProject('Default Project', '');
+        ProjectsController.saveProjects();
+        localStorage.setItem('pageHasLoadedBefore', true);
+    }
+    ProjectsController.loadProjects();
     loadProjects(ProjectsController.getProjects());
 
 })();
