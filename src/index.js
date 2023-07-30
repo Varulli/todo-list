@@ -117,7 +117,6 @@ const DOMController = (() => {
 
             projectCard.addEventListener('click', e => {
                 currProjectIndex = projectCard.dataset.projectIndex;
-                console.log(currProjectIndex);
                 loadProject(project);
             });
 
@@ -177,7 +176,10 @@ const DOMController = (() => {
             const todo = document.createElement('button');
             todo.classList.add('todo');
             todo.dataset.todoIndex = todoIndex;
-            todo.addEventListener('click', e => { openTodoForm(todos[todoIndex]) });
+            todo.addEventListener('click', e => {
+                openTodoForm(todos[todoIndex]);
+                ProjectsController.removeTodoFromProject(currProjectIndex, todoIndex);
+            });
 
             const todoTitle = document.createElement('div');
             todoTitle.textContent = todos[todoIndex].getTitle();
