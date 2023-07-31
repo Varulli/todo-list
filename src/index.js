@@ -237,8 +237,9 @@ const DOMController = (() => {
             todoElement.addEventListener('click', e => {
                 openTodoForm(todo);
                 todoSubmitButton.addEventListener('click', e => {
-                    ProjectsController.removeTodoFromProject(currProjectIndex, todoIndex);
+                    ProjectsController.updateTodoOfProject(todoTitleBox.value, todoDescriptionBox.value, new Date(todoDueDateBox.value), todoPriorityBox.value, todoNotesBox.value, currProjectIndex, todoIndex);
                     ProjectsController.saveProjects();
+                    loadProject(ProjectsController.getProjects()[currProjectIndex]);
                 }, { once: true });
             });
 
@@ -313,7 +314,16 @@ const DOMController = (() => {
         const newTodoButton = document.createElement('button');
         newTodoButton.classList.add('new-todo-button');
         newTodoButton.textContent = "New Todo";
-        newTodoButton.addEventListener('click', e => { todoDialog.showModal(); });
+        newTodoButton.addEventListener('click', e => {
+            todoDialog.showModal();
+            todoSubmitButton.addEventListener('click', e => {
+                if (todoForm.checkValidity()) {
+                    ProjectsController.addTodoToProject(todoTitleBox.value, todoDescriptionBox.value, new Date(todoDueDateBox.value), todoPriorityBox.value, todoNotesBox.value, currProjectIndex);
+                    ProjectsController.saveProjects();
+                    loadProject(ProjectsController.getProjects()[currProjectIndex]);
+                }
+            }, { once: true });
+        });
         buttonBar.appendChild(newTodoButton);
     }
 
@@ -343,14 +353,6 @@ const DOMController = (() => {
             ProjectsController.addProject(projectTitleBox.value, projectDescriptionBox.value);
             ProjectsController.saveProjects();
             loadProjects(ProjectsController.getProjects());
-        }
-    });
-
-    todoSubmitButton.addEventListener('click', e => {
-        if (todoForm.checkValidity()) {
-            ProjectsController.addTodoToProject(todoTitleBox.value, todoDescriptionBox.value, new Date(todoDueDateBox.value), todoPriorityBox.value, todoNotesBox.value, currProjectIndex);
-            ProjectsController.saveProjects();
-            loadProject(ProjectsController.getProjects()[currProjectIndex]);
         }
     });
 
