@@ -118,10 +118,21 @@ const DOMController = (() => {
             content.removeChild(content.firstChild);
     }
 
+    const clickIntoProject = e => {
+        let target = e.target;
+        while (!target.classList.contains('project-card')) {
+            target = target.parentNode;
+        }
+        currProjectIndex = target.dataset.projectIndex;
+        console.log(currProjectIndex);
+        loadProject(ProjectsController.getProjects()[currProjectIndex]);
+    }
+
     function loadProjects(projects) {
         clearContent();
         clearButtonBar();
         loadNewProjectButton();
+        loadDeleteProjectButton();
         setBackButtonDisabled(true);
 
         const projectView = document.createElement('div');
@@ -163,10 +174,7 @@ const DOMController = (() => {
                     preview.appendChild(divider);
             }
 
-            projectCard.addEventListener('click', e => {
-                currProjectIndex = projectCard.dataset.projectIndex;
-                loadProject(project);
-            });
+            projectCard.addEventListener('click', clickIntoProject);
 
             projectCard.appendChild(preview);
 
@@ -308,6 +316,40 @@ const DOMController = (() => {
         newProjectButton.textContent = "New Project";
         newProjectButton.addEventListener('click', e => { projectDialog.showModal(); });
         buttonBar.appendChild(newProjectButton);
+    }
+
+    const deleteProject = e => {
+        let target = e.target;
+        while (!target.classList.contains('project-card')) {
+            target = target.parentNode;
+        }
+        ProjectsController.removeProject(target.dataset.projectIndex);
+        loadProjects(ProjectsController.getProjects());
+    }
+
+    function loadDeleteProjectButton() {
+        const deleteProjectButton = document.createElement('button');
+        deleteProjectButton.classList.add('delete-project-button');
+        deleteProjectButton.textContent = "Delete Project";
+        deleteProjectButton.addEventListener('click', e => {
+            const projectView = document.querySelector('.project-view');
+            if (!deleteProjectButton.classList.contains('active')) {
+                for (const projectCard of projectView.children) {
+                    projectCard.addEventListener('click', deleteProject);
+                    projectCard.removeEventListener('click', clickIntoProject);
+                }
+                document.querySelector('.new-project-button').disabled = true;
+            }
+            else {
+                for (const projectCard of projectView.children) {
+                    projectCard.removeEventListener('click', deleteProject);
+                    projectCard.addEventListener('click', clickIntoProject);
+                }
+                document.querySelector('.new-project-button').disabled = false;
+            }
+            deleteProjectButton.classList.toggle('active');
+        });
+        buttonBar.appendChild(deleteProjectButton);
     }
 
     function loadNewTodoButton() {
