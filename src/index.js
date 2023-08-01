@@ -184,10 +184,25 @@ const DOMController = (() => {
         content.appendChild(projectView);
     }
 
+    const clickIntoTodo = e => {
+        let target = e.target;
+        while (!target.classList.contains('todo')) {
+            target = target.parentNode;
+        }
+        const todoIndex = target.dataset.todoIndex;
+        openTodoForm(ProjectsController.getProjects()[currProjectIndex].getTodos()[todoIndex]);
+        todoSubmitButton.addEventListener('click', e => {
+            ProjectsController.updateTodoOfProject(todoTitleBox.value, todoDescriptionBox.value, new Date(todoDueDateBox.value), todoPriorityBox.value, todoNotesBox.value, currProjectIndex, todoIndex);
+            ProjectsController.saveProjects();
+            loadProject(ProjectsController.getProjects()[currProjectIndex]);
+        }, { once: true });
+    }
+
     function loadProject(project) {
         clearContent();
         clearButtonBar();
         loadNewTodoButton();
+        loadDeleteTodoButton();
         loadToggleSortButton();
         setBackButtonDisabled(false);
 
@@ -242,14 +257,7 @@ const DOMController = (() => {
             const todoElement = document.createElement('button');
             todoElement.classList.add('todo');
             todoElement.dataset.todoIndex = todoIndex;
-            todoElement.addEventListener('click', e => {
-                openTodoForm(todo);
-                todoSubmitButton.addEventListener('click', e => {
-                    ProjectsController.updateTodoOfProject(todoTitleBox.value, todoDescriptionBox.value, new Date(todoDueDateBox.value), todoPriorityBox.value, todoNotesBox.value, currProjectIndex, todoIndex);
-                    ProjectsController.saveProjects();
-                    loadProject(ProjectsController.getProjects()[currProjectIndex]);
-                }, { once: true });
-            });
+            todoElement.addEventListener('click', clickIntoTodo);
 
             const todoTitle = document.createElement('div');
             todoTitle.textContent = todo.getTitle();
@@ -324,6 +332,7 @@ const DOMController = (() => {
             target = target.parentNode;
         }
         ProjectsController.removeProject(target.dataset.projectIndex);
+        ProjectsController.saveProjects();
         loadProjects(ProjectsController.getProjects());
     }
 
@@ -367,6 +376,45 @@ const DOMController = (() => {
             }, { once: true });
         });
         buttonBar.appendChild(newTodoButton);
+    }
+
+    const deleteTodo = e => {
+        let target = e.target;
+        while (!target.classList.contains('todo')) {
+            target = target.parentNode;
+        }
+        ProjectsController.removeTodoFromProject(currProjectIndex, target.dataset.todoIndex);
+        ProjectsController.saveProjects();
+        loadProject(ProjectsController.getProjects()[currProjectIndex]);
+    }
+
+    function loadDeleteTodoButton() {
+        const deleteTodoButton = document.createElement('button');
+        deleteTodoButton.classList.add('delete-todo-button');
+        deleteTodoButton.textContent = "Delete Todo";
+        deleteTodoButton.addEventListener('click', e => {
+            const todoList = document.querySelectorAll('.todo-list .todo-wrapper .todo');
+            if (!deleteTodoButton.classList.contains('active')) {
+                for (const todo of todoList) {
+                    todo.addEventListener('click', deleteTodo);
+                    todo.removeEventListener('click', clickIntoTodo);
+                }
+                backButton.disabled = true;
+                document.querySelector('.new-todo-button').disabled = true;
+                document.querySelector('.toggle-sort-button').disabled = true;
+            }
+            else {
+                for (const todo of todoList) {
+                    todo.removeEventListener('click', deleteTodo);
+                    todo.addEventListener('click', clickIntoTodo);
+                }
+                backButton.disabled = false;
+                document.querySelector('.new-todo-button').disabled = false;
+                document.querySelector('.toggle-sort-button').disabled = false;
+            }
+            deleteTodoButton.classList.toggle('active');
+        });
+        buttonBar.appendChild(deleteTodoButton);
     }
 
     function loadToggleSortButton() {
