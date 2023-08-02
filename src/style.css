@@ -6,6 +6,7 @@
 
 body {
     margin: 0;
+    background-color: var(--lighter-gray);
 }
 
 button {
@@ -13,8 +14,13 @@ button {
     font-family: inherit;
 }
 
+.button-bar {
+    background-color: white;
+    box-shadow: 0 5px 5px darkgray;
+}
+
 .content {
-    padding: 1rem;
+    padding: 2rem;
 }
 
 .project-view {
@@ -32,7 +38,7 @@ button {
     max-width: 20rem;
     max-height: 24rem;
     background-color: white;
-    box-shadow: .2rem .2rem .2rem lightgray;
+    box-shadow: .2rem .2rem .2rem darkgray;
 }
 
 .project-card:hover {
@@ -43,8 +49,24 @@ button {
     background-color: white;
 }
 
+.project-title {
+    margin: .2rem;
+    font-weight: bold;
+    font-size: 1.2rem;
+}
+
 .project-description {
     overflow-wrap: break-word;
+    font-size: 1.1rem;
+}
+
+.preview {
+    padding: 0;
+}
+
+.preview-todo {
+    text-align: left;
+    margin-left: 3rem;
 }
 
 dialog {
@@ -85,4 +107,5 @@ label {
 
 .divider {
     border-top: 1px solid lightgray;
+    margin: .3rem 1rem;
 }
