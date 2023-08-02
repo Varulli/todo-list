@@ -1,6 +1,7 @@
 :root {
     font-size: 16px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --lighter-gray: rgb(240, 240, 240);
 }
 
 body {
@@ -35,7 +36,7 @@ button {
 }
 
 .project-card:hover {
-    background-color: rgb(240, 240, 240);
+    background-color: var(--lighter-gray);
 }
 
 .project-card:active {
@@ -66,4 +67,22 @@ label {
 
 .cancel-button {
     align-self: flex-end;
+    padding: 0;
+    border: 0;
+    border-radius: 2rem;
+    width: 32px;
+    height: 32px;
+    background-color: white;
+}
+
+.cancel-button:hover {
+    background-color: var(--lighter-gray);
+}
+
+.cancel-button:active {
+    background-color: white;
+}
+
+.divider {
+    border-top: 1px solid lightgray;
 }

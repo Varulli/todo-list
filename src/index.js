@@ -3,6 +3,8 @@ import { TodoItem, TodoProject } from './todoObjects';
 // import { clearContent, loadProjects, loadProject, currProjectIndex } from './contentLoaders';
 // import { clearButtonBar, loadNewProjectButton, loadNewTodoButton } from './buttonBarLoaders';
 
+import cancelSVG from './cancel.svg';
+
 const DOMController = (() => {
 
     const buttonBar = document.querySelector('.button-bar');
@@ -436,6 +438,14 @@ const DOMController = (() => {
 
 
 
+
+    document.querySelectorAll('.cancel-button').forEach(button => {
+        const image = document.createElement('img');
+        image.src = cancelSVG;
+        image.alt = "Cancel button";
+        image.style.maxWidth = "2rem";
+        button.appendChild(image);
+    })
 
     backButton.addEventListener('click', e => { loadProjects(ProjectsController.getProjects()); });
 
