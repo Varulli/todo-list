@@ -20,7 +20,7 @@
 
     <dialog id="project-dialog">
         <form method="dialog">
-            <button type="reset" class="cancel-button">X</button>
+            <button type="reset" class="project cancel-button">X</button>
 
             <div class="title-field">
                 <label for="project-title">Title: </label>
@@ -38,7 +38,7 @@
 
     <dialog id="todo-dialog">
         <form method="dialog">
-            <button type="reset" class="cancel-button">X</button>
+            <button type="reset" class="todo cancel-button">X</button>
 
             <div class="title-field">
                 <label for="todo-title">Title: </label>
@@ -73,6 +73,46 @@
             </div>
 
             <button type="submit" class="todo submit-button">Submit</button>
+        </form>
+    </dialog>
+
+    <dialog id="update-todo-dialog">
+        <form method="dialog">
+            <button type="reset" class="update-todo cancel-button">X</button>
+
+            <div class="title-field">
+                <label for="update-todo-title">Title: </label>
+                <input type="text" name="update-todo-title" id="update-todo-title" required>
+            </div>
+
+            <div class="description-field">
+                <label for="update-todo-description">Description: </label>
+                <textarea name="update-todo-description" id="update-todo-description" cols="20" rows="5"></textarea>
+            </div>
+
+            <div class="due-date-field">
+                <label for="update-todo-due-date">Due Date: </label>
+                <input type="date" name="update-todo-due-date" id="update-todo-due-date" required>
+            </div>
+
+            <div class="priority-field">
+                <label for="update-todo-priority">Priority: </label>
+                <select name="update-todo-priority" id="update-todo-priority">
+                    <option value="0">0</option>
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+
+            <div class="notes-field">
+                <label for="update-todo-notes">Notes: </label>
+                <textarea name="update-todo-notes" id="update-todo-notes" cols="20" rows="5"></textarea>
+            </div>
+
+            <button type="submit" class="update-todo submit-button">Submit</button>
         </form>
     </dialog>
 

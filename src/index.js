@@ -12,15 +12,19 @@ const DOMController = (() => {
 
     const projectDialog = document.querySelector('#project-dialog');
     const todoDialog = document.querySelector('#todo-dialog');
+    const updateTodoDialog = document.querySelector('#update-todo-dialog');
 
     const projectForm = document.querySelector('#project-dialog form');
     const todoForm = document.querySelector('#todo-dialog form');
+    const updateTodoForm = document.querySelector('#update-todo-dialog form');
 
     const projectSubmitButton = document.querySelector('.project.submit-button');
     const todoSubmitButton = document.querySelector('.todo.submit-button');
+    const updateTodoSubmitButton = document.querySelector('.update-todo.submit-button');
 
-    const projectCancelButton = document.querySelector('#project-dialog form .cancel-button');
-    const todoCancelButton = document.querySelector('#todo-dialog form .cancel-button');
+    const projectCancelButton = document.querySelector('.project.cancel-button');
+    const todoCancelButton = document.querySelector('.todo.cancel-button');
+    const updateTodoCancelButton = document.querySelector('.update-todo.cancel-button')
 
     const projectTitleBox = document.querySelector('#project-title');
     const projectDescriptionBox = document.querySelector('#project-description');
@@ -31,7 +35,14 @@ const DOMController = (() => {
     const todoPriorityBox = document.querySelector('#todo-priority');
     const todoNotesBox = document.querySelector('#todo-notes');
 
+    const updateTodoTitleBox = document.querySelector('#update-todo-title');
+    const updateTodoDescriptionBox = document.querySelector('#update-todo-description');
+    const updateTodoDueDateBox = document.querySelector('#update-todo-due-date');
+    const updateTodoPriorityBox = document.querySelector('#update-todo-priority');
+    const updateTodoNotesBox = document.querySelector('#update-todo-notes');
+
     let currProjectIndex;
+    let currTodoIndex;
 
     const ProjectsController = (() => {
         const projects = [];
@@ -113,9 +124,9 @@ const DOMController = (() => {
         return { getProjects, addProject, removeProject, addTodoToProject, removeTodoFromProject, updateDetailsOfProject, updateTodoOfProject, toggleSortModeOfProject, saveProjects, loadProjects };
     })();
 
-    function clearContent() {
-        while (content.hasChildNodes())
-            content.removeChild(content.firstChild);
+    function removeAllChildren(element) {
+        while (element.hasChildNodes())
+            element.removeChild(element.firstChild);
     }
 
     const clickIntoProject = e => {
@@ -129,7 +140,7 @@ const DOMController = (() => {
     }
 
     function loadProjects(projects) {
-        clearContent();
+        removeAllChildren(content);
         clearButtonBar();
         loadNewProjectButton();
         loadDeleteProjectButton();
@@ -184,22 +195,26 @@ const DOMController = (() => {
         content.appendChild(projectView);
     }
 
+    function openUpdateTodoForm(todo) {
+        updateTodoDialog.showModal();
+        updateTodoTitleBox.value = todo.getTitle();
+        updateTodoDescriptionBox.value = todo.getDescription();
+        updateTodoDueDateBox.valueAsNumber = todo.getDueDate().valueOf();
+        updateTodoPriorityBox.value = todo.getPriority();
+        updateTodoNotesBox.value = todo.getNotes();
+    }
+
     const clickIntoTodo = e => {
         let target = e.target;
         while (!target.classList.contains('todo')) {
             target = target.parentNode;
         }
-        const todoIndex = target.dataset.todoIndex;
-        openTodoForm(ProjectsController.getProjects()[currProjectIndex].getTodos()[todoIndex]);
-        todoSubmitButton.addEventListener('click', e => {
-            ProjectsController.updateTodoOfProject(todoTitleBox.value, todoDescriptionBox.value, new Date(todoDueDateBox.value), todoPriorityBox.value, todoNotesBox.value, currProjectIndex, todoIndex);
-            ProjectsController.saveProjects();
-            loadProject(ProjectsController.getProjects()[currProjectIndex]);
-        }, { once: true });
+        currTodoIndex = target.dataset.todoIndex;
+        openUpdateTodoForm(ProjectsController.getProjects()[currProjectIndex].getTodos()[currTodoIndex]);
     }
 
     function loadProject(project) {
-        clearContent();
+        removeAllChildren(content);
         clearButtonBar();
         loadNewTodoButton();
         loadDeleteTodoButton();
@@ -304,15 +319,6 @@ const DOMController = (() => {
         content.appendChild(projectDetails);
     }
 
-    function openTodoForm(todo) {
-        todoDialog.showModal();
-        todoTitleBox.value = todo.getTitle();
-        todoDescriptionBox.value = todo.getDescription();
-        todoDueDateBox.valueAsNumber = todo.getDueDate().valueOf();
-        todoPriorityBox.value = todo.getPriority();
-        todoNotesBox.value = todo.getNotes();
-    }
-
     function clearButtonBar() {
         while (buttonBar.childElementCount > 1)
             buttonBar.removeChild(buttonBar.lastChild);
@@ -348,6 +354,7 @@ const DOMController = (() => {
                     projectCard.removeEventListener('click', clickIntoProject);
                 }
                 document.querySelector('.new-project-button').disabled = true;
+                deleteProjectButton.textContent = "Cancel";
             }
             else {
                 for (const projectCard of projectView.children) {
@@ -355,6 +362,7 @@ const DOMController = (() => {
                     projectCard.addEventListener('click', clickIntoProject);
                 }
                 document.querySelector('.new-project-button').disabled = false;
+                deleteProjectButton.textContent = "Delete Project";
             }
             deleteProjectButton.classList.toggle('active');
         });
@@ -365,16 +373,7 @@ const DOMController = (() => {
         const newTodoButton = document.createElement('button');
         newTodoButton.classList.add('new-todo-button');
         newTodoButton.textContent = "New Todo";
-        newTodoButton.addEventListener('click', e => {
-            todoDialog.showModal();
-            todoSubmitButton.addEventListener('click', e => {
-                if (todoForm.checkValidity()) {
-                    ProjectsController.addTodoToProject(todoTitleBox.value, todoDescriptionBox.value, new Date(todoDueDateBox.value), todoPriorityBox.value, todoNotesBox.value, currProjectIndex);
-                    ProjectsController.saveProjects();
-                    loadProject(ProjectsController.getProjects()[currProjectIndex]);
-                }
-            }, { once: true });
-        });
+        newTodoButton.addEventListener('click', e => { todoDialog.showModal(); });
         buttonBar.appendChild(newTodoButton);
     }
 
@@ -402,6 +401,7 @@ const DOMController = (() => {
                 backButton.disabled = true;
                 document.querySelector('.new-todo-button').disabled = true;
                 document.querySelector('.toggle-sort-button').disabled = true;
+                deleteTodoButton.textContent = "Cancel";
             }
             else {
                 for (const todo of todoList) {
@@ -411,6 +411,7 @@ const DOMController = (() => {
                 backButton.disabled = false;
                 document.querySelector('.new-todo-button').disabled = false;
                 document.querySelector('.toggle-sort-button').disabled = false;
+                deleteTodoButton.textContent = "Delete Todo";
             }
             deleteTodoButton.classList.toggle('active');
         });
@@ -446,8 +447,25 @@ const DOMController = (() => {
         }
     });
 
+    todoSubmitButton.addEventListener('click', e => {
+        if (todoForm.checkValidity()) {
+            ProjectsController.addTodoToProject(todoTitleBox.value, todoDescriptionBox.value, new Date(todoDueDateBox.value), todoPriorityBox.value, todoNotesBox.value, currProjectIndex);
+            ProjectsController.saveProjects();
+            loadProject(ProjectsController.getProjects()[currProjectIndex]);
+        }
+    });
+
+    updateTodoSubmitButton.addEventListener('click', e => {
+        if (updateTodoForm.checkValidity()) {
+            ProjectsController.updateTodoOfProject(updateTodoTitleBox.value, updateTodoDescriptionBox.value, new Date(updateTodoDueDateBox.value), updateTodoPriorityBox.value, updateTodoNotesBox.value, currProjectIndex, currTodoIndex);
+            ProjectsController.saveProjects();
+            loadProject(ProjectsController.getProjects()[currProjectIndex]);
+        }
+    });
+
     projectCancelButton.addEventListener('click', e => { projectDialog.close(); });
     todoCancelButton.addEventListener('click', e => { todoDialog.close(); });
+    updateTodoCancelButton.addEventListener('click', e => { updateTodoDialog.close(); });
 
     if (!localStorage.getItem('pageHasLoadedBefore')) {
         ProjectsController.addProject('Default Project', '');
