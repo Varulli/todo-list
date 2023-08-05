@@ -11,6 +11,10 @@ body {
     background-color: var(--lighter-gray);
 }
 
+textarea {
+    font-family: inherit;
+}
+
 button {
     font-size: inherit;
     font-family: inherit;
@@ -20,7 +24,7 @@ button {
     background-color: white;
     box-shadow: 0 5px 5px darkgray;
     padding: .1rem;
-    border-bottom: 2px solid var(--dark-purple);
+    border-bottom: 1px solid var(--dark-purple);
 }
 
 .button-bar button {
@@ -177,4 +181,23 @@ textarea:focus-visible,
 select:focus-visible {
     border: 2px solid var(--dark-purple);
     outline: var(--dark-purple) solid 1px;
+}
+
+.title-area {
+    margin-bottom: 1rem;
+}
+
+.description-area {
+    margin-bottom: 2rem;
+}
+
+.todo-list {
+    padding: 0;
+    background-color: white;
+    border: 2px solid var(--light-purple);
+    border-radius: 1rem;
+}
+
+.todo-wrapper {
+    margin: 1rem 3rem;
 }

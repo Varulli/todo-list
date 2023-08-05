@@ -256,6 +256,8 @@ const DOMController = (() => {
         descriptionBox.value = project.getDescription();
         descriptionBox.name = "description-box";
         descriptionBox.id = "description-box";
+        descriptionBox.cols = 21;
+        descriptionBox.rows = 5;
         descriptionBox.addEventListener('input', e => {
             ProjectsController.updateDetailsOfProject(titleBox.value, descriptionBox.value, currProjectIndex);
             ProjectsController.saveProjects();
