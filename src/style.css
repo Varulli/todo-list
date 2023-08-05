@@ -43,9 +43,13 @@ button {
     border-radius: .5rem;
 }
 
-.button-bar button:active,
+.button-bar button:hover,
 .button-bar button:disabled {
     background-color: var(--light-purple);
+}
+
+.button-bar button:active {
+    background-color: var(--dark-purple);
 }
 
 .content {
@@ -115,6 +119,20 @@ label {
 
 .submit-button {
     align-self: center;
+    font-weight: bold;
+    color: white;
+    background-color: var(--dark-purple);
+    border: none;
+    border-radius: 1rem;
+    padding: .4rem .9rem;
+}
+
+.submit-button:hover {
+    background-color: var(--light-purple);
+}
+
+.submit-button:active {
+    background-color: var(--dark-purple);
 }
 
 .cancel-button {
