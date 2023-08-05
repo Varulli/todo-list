@@ -2,6 +2,8 @@
     font-size: 16px;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     --lighter-gray: rgb(240, 240, 240);
+    --light-purple: rgb(186, 139, 212);
+    --dark-purple: rgb(148, 31, 194);
 }
 
 body {
@@ -17,6 +19,32 @@ button {
 .button-bar {
     background-color: white;
     box-shadow: 0 5px 5px darkgray;
+    padding: .1rem;
+}
+
+.button-bar button {
+    margin-right: .2rem;
+    font-size: 1.3rem;
+    width: 100%;
+    max-width: 10rem;
+    height: 2.5rem;
+    color: white;
+    background-color: var(--dark-purple);
+    border: 1px solid white;
+    border-radius: 1rem;
+    font-weight: bold;
+}
+
+.button-bar button.back-button {
+    width: 5rem;
+    height: 3rem;
+    margin-right: 1rem;
+    border-radius: .5rem;
+}
+
+.button-bar button:active,
+.button-bar button:disabled {
+    background-color: var(--light-purple);
 }
 
 .content {
@@ -81,6 +109,7 @@ form {
 
 label {
     display: block;
+    font-weight: bold;
 }
 
 .submit-button {

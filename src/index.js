@@ -400,7 +400,7 @@ const DOMController = (() => {
                     todo.addEventListener('click', deleteTodo);
                     todo.removeEventListener('click', clickIntoTodo);
                 }
-                backButton.disabled = true;
+                setBackButtonDisabled(true);
                 document.querySelector('.new-todo-button').disabled = true;
                 document.querySelector('.toggle-sort-button').disabled = true;
                 deleteTodoButton.textContent = "Cancel";
@@ -410,7 +410,7 @@ const DOMController = (() => {
                     todo.removeEventListener('click', deleteTodo);
                     todo.addEventListener('click', clickIntoTodo);
                 }
-                backButton.disabled = false;
+                setBackButtonDisabled(false);
                 document.querySelector('.new-todo-button').disabled = false;
                 document.querySelector('.toggle-sort-button').disabled = false;
                 deleteTodoButton.textContent = "Delete Todo";
