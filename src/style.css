@@ -20,6 +20,7 @@ button {
     background-color: white;
     box-shadow: 0 5px 5px darkgray;
     padding: .1rem;
+    border-bottom: 2px solid var(--dark-purple);
 }
 
 .button-bar button {
@@ -58,7 +59,7 @@ button {
 }
 
 .project-card {
-    border: 1px solid black;
+    border: 2px solid var(--dark-purple);
     border-radius: .2rem;
     padding: .5rem;
     width: 100%;
@@ -135,6 +136,11 @@ label {
 }
 
 .divider {
-    border-top: 1px solid lightgray;
+    border-top: 1px solid var(--light-purple);
     margin: .3rem 1rem;
+}
+
+::marker {
+    color: var(--dark-purple);
+    font-weight: bold;
 }
