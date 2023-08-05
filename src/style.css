@@ -162,3 +162,19 @@ label {
     color: var(--dark-purple);
     font-weight: bold;
 }
+
+input,
+textarea,
+select {
+    font-size: 1rem;
+    border: 2px solid var(--light-purple);
+    border-radius: .4rem;
+    background-color: white;
+}
+
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    border: 2px solid var(--dark-purple);
+    outline: var(--dark-purple) solid 1px;
+}
