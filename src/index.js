@@ -223,6 +223,8 @@ const DOMController = (() => {
         loadToggleSortButton();
         setBackButtonDisabled(false);
 
+        const projectWrapper = document.createElement('div');
+
         const projectDetails = document.createElement('div');
 
         const titleArea = document.createElement('div');
@@ -232,6 +234,8 @@ const DOMController = (() => {
         const descriptionArea = document.createElement('div');
         const descriptionLabel = document.createElement('label');
         const descriptionBox = document.createElement('textarea');
+
+        projectWrapper.classList.add('project-wrapper');
 
         projectDetails.classList.add('project-details');
 
@@ -262,6 +266,13 @@ const DOMController = (() => {
             ProjectsController.updateDetailsOfProject(titleBox.value, descriptionBox.value, currProjectIndex);
             ProjectsController.saveProjects();
         });
+
+        const todoListWrapper = document.createElement('div');
+        todoListWrapper.classList.add('todo-list-wrapper');
+
+        const todoListLabel = document.createElement('label');
+        todoListLabel.textContent = "Todo Items:";
+        todoListWrapper.appendChild(todoListLabel);
 
         const todoList = document.createElement('ol');
         todoList.classList.add('todo-list');
@@ -309,6 +320,7 @@ const DOMController = (() => {
             if (todoIndex + 1 !== todos.length)
                 todoList.appendChild(divider);
         }
+        todoListWrapper.appendChild(todoList);
 
         titleArea.appendChild(titleLabel);
         titleArea.appendChild(titleBox);
@@ -318,9 +330,11 @@ const DOMController = (() => {
 
         projectDetails.appendChild(titleArea);
         projectDetails.appendChild(descriptionArea);
-        projectDetails.appendChild(todoList);
 
-        content.appendChild(projectDetails);
+        projectWrapper.appendChild(projectDetails);
+        projectWrapper.appendChild(todoListWrapper);
+
+        content.appendChild(projectWrapper);
     }
 
     function clearButtonBar() {

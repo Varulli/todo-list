@@ -183,6 +183,11 @@ select:focus-visible {
     outline: var(--dark-purple) solid 1px;
 }
 
+.project-wrapper {
+    display: flex;
+    gap: 2rem;
+}
+
 .title-area {
     margin-bottom: 1rem;
 }
@@ -191,7 +196,12 @@ select:focus-visible {
     margin-bottom: 2rem;
 }
 
+#description-box {
+    resize: vertical;
+}
+
 .todo-list {
+    margin: 0;
     padding: 0;
     background-color: white;
     border: 2px solid var(--light-purple);
