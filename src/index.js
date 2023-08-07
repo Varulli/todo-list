@@ -139,7 +139,6 @@ const DOMController = (() => {
             target = target.parentNode;
         }
         currProjectIndex = target.dataset.projectIndex;
-        console.log(currProjectIndex);
         loadProject(ProjectsController.getProjects()[currProjectIndex]);
     }
 
@@ -404,7 +403,7 @@ const DOMController = (() => {
 
     const deleteTodo = e => {
         let target = e.target;
-        while (!target.classList.contains('todo')) {
+        while (target.nodeName.toLowerCase() != 'tr') {
             target = target.parentNode;
         }
         ProjectsController.removeTodoFromProject(currProjectIndex, target.dataset.todoIndex);
@@ -417,7 +416,7 @@ const DOMController = (() => {
         deleteTodoButton.classList.add('delete-todo-button');
         deleteTodoButton.textContent = "Delete Todo";
         deleteTodoButton.addEventListener('click', e => {
-            const todoList = document.querySelectorAll('.todo-list .todo-wrapper .todo');
+            const todoList = document.querySelectorAll('tr:not(:first-child)');
             if (!deleteTodoButton.classList.contains('active')) {
                 for (const todo of todoList) {
                     todo.addEventListener('click', deleteTodo);
@@ -505,7 +504,8 @@ const DOMController = (() => {
         ProjectsController.saveProjects();
         localStorage.setItem('pageHasLoadedBefore', true);
     }
-    ProjectsController.loadProjects();
+    else
+        ProjectsController.loadProjects();
     loadProjects(ProjectsController.getProjects());
 
 })();
