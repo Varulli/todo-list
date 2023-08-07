@@ -97,7 +97,7 @@ const DOMController = (() => {
 
                     localStorage.setItem(`project${projectIndex}Todo${todoIndex}Title`, todo.getTitle());
                     localStorage.setItem(`project${projectIndex}Todo${todoIndex}Description`, todo.getDescription());
-                    localStorage.setItem(`project${projectIndex}Todo${todoIndex}DueDate`, todo.getDueDate().toISOString());
+                    localStorage.setItem(`project${projectIndex}Todo${todoIndex}DueDate`, todo.getDueDate().toString());
                     localStorage.setItem(`project${projectIndex}Todo${todoIndex}Priority`, todo.getPriority());
                     localStorage.setItem(`project${projectIndex}Todo${todoIndex}Notes`, todo.getNotes());
                 }
@@ -481,7 +481,14 @@ const DOMController = (() => {
 
     todoSubmitButton.addEventListener('click', e => {
         if (todoForm.checkValidity()) {
-            ProjectsController.addTodoToProject(todoTitleBox.value, todoDescriptionBox.value, new Date(todoDueDateBox.value), todoPriorityBox.value, todoNotesBox.value, currProjectIndex);
+            const dateValue = todoDueDateBox.value;
+            const dateArray = dateValue.split('-');
+            const year = parseInt(dateArray[0]);
+            const month = parseInt(dateArray[1]) - 1;
+            const day = parseInt(dateArray[2]);
+            const date = new Date(year, month, day);
+
+            ProjectsController.addTodoToProject(todoTitleBox.value, todoDescriptionBox.value, date, todoPriorityBox.value, todoNotesBox.value, currProjectIndex);
             ProjectsController.saveProjects();
             loadProject(ProjectsController.getProjects()[currProjectIndex]);
         }
@@ -489,7 +496,14 @@ const DOMController = (() => {
 
     updateTodoSubmitButton.addEventListener('click', e => {
         if (updateTodoForm.checkValidity()) {
-            ProjectsController.updateTodoOfProject(updateTodoTitleBox.value, updateTodoDescriptionBox.value, new Date(updateTodoDueDateBox.value), updateTodoPriorityBox.value, updateTodoNotesBox.value, currProjectIndex, currTodoIndex);
+            const dateValue = updateTodoDueDateBox.value;
+            const dateArray = dateValue.split('-');
+            const year = parseInt(dateArray[0]);
+            const month = parseInt(dateArray[1]) - 1;
+            const day = parseInt(dateArray[2]);
+            const date = new Date(year, month, day);
+
+            ProjectsController.updateTodoOfProject(updateTodoTitleBox.value, updateTodoDescriptionBox.value, date, updateTodoPriorityBox.value, updateTodoNotesBox.value, currProjectIndex, currTodoIndex);
             ProjectsController.saveProjects();
             loadProject(ProjectsController.getProjects()[currProjectIndex]);
         }
