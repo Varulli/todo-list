@@ -18,6 +18,7 @@ textarea {
 button {
     font-size: inherit;
     font-family: inherit;
+    padding: 0;
 }
 
 .button-bar {
@@ -200,14 +201,46 @@ select:focus-visible {
     resize: vertical;
 }
 
+.todo-list-wrapper {
+    width: 100%;
+}
+
+.table-wrapper {
+    border-radius: 1rem;
+    border: 2px solid var(--light-purple);
+    overflow: hidden;
+    width: -moz-fit-content;
+    width: fit-content;
+}
+
 .todo-list {
     margin: 0;
     padding: 0;
     background-color: white;
-    border: 2px solid var(--light-purple);
-    border-radius: 1rem;
+    border-collapse: collapse;
 }
 
-.todo-wrapper {
-    margin: 1rem 3rem;
+th,
+td {
+    text-align: center;
+    padding: .7rem 1.2rem;
+    max-width: 15rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+tr {
+    border-radius: .5rem;
+}
+
+tr:nth-child(odd) {
+    background-color: var(--lighter-gray);
+}
+
+tr:not(.table-headers):hover {
+    background-color: var(--light-purple);
+}
+
+tr:not(.table-headers):active {
+    background-color: transparent;
 }

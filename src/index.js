@@ -1,3 +1,5 @@
+import { format } from 'date-fns';
+
 import './style.css';
 import { TodoItem, TodoProject } from './todoObjects';
 // import { clearContent, loadProjects, loadProject, currProjectIndex } from './contentLoaders';
@@ -208,7 +210,7 @@ const DOMController = (() => {
 
     const clickIntoTodo = e => {
         let target = e.target;
-        while (!target.classList.contains('todo')) {
+        while (target.nodeName.toLowerCase() != 'tr') {
             target = target.parentNode;
         }
         currTodoIndex = target.dataset.todoIndex;
@@ -274,53 +276,58 @@ const DOMController = (() => {
         todoListLabel.textContent = "Todo Items:";
         todoListWrapper.appendChild(todoListLabel);
 
-        const todoList = document.createElement('ol');
+        const tableWrapper = document.createElement('div');
+        tableWrapper.classList.add('table-wrapper');
+
+        const todoList = document.createElement('table');
         todoList.classList.add('todo-list');
+
+        const tableHeaders = document.createElement('tr');
+        tableHeaders.classList.add('table-headers');
+
+        const headers = ['Title', 'Description', 'Due Date', 'Priority', 'Notes'];
+        headers.forEach(headerText => {
+            const header = document.createElement('th');
+            header.textContent = headerText;
+            tableHeaders.appendChild(header);
+        });
+        todoList.appendChild(tableHeaders);
 
         const todos = project.getTodos();
         for (let todoIndex = 0; todoIndex < todos.length; todoIndex++) {
             const todo = todos[todoIndex];
 
-            const todoWrapper = document.createElement('li');
-            todoWrapper.classList.add('todo-wrapper');
+            const tableRow = document.createElement('tr');
+            tableRow.role = 'button';
+            tableRow.dataset.todoIndex = todoIndex;
+            tableRow.addEventListener('click', clickIntoTodo);
 
-            const todoElement = document.createElement('button');
-            todoElement.classList.add('todo');
-            todoElement.dataset.todoIndex = todoIndex;
-            todoElement.addEventListener('click', clickIntoTodo);
-
-            const todoTitle = document.createElement('div');
+            const todoTitle = document.createElement('td');
             todoTitle.textContent = todo.getTitle();
-            todoTitle.classList.add('todo-title');
 
-            const todoDescription = document.createElement('div');
+            const todoDescription = document.createElement('td');
             todoDescription.textContent = todo.getDescription();
-            todoDescription.classList.add('todo-description');
 
-            const todoDueDate = document.createElement('div');
+            const todoDueDate = document.createElement('td');
             const date = todo.getDueDate();
-            todoDueDate.textContent = `${date.getMonth() + 1}/${date.getDate() + 1}/${date.getFullYear()}`;
-            todoDueDate.textContent = date.toISOString().slice(0, 10);
-            todoDueDate.classList.add('todo-due-date');
+            todoDueDate.textContent = format(date, 'M-d-y');
 
-            const todoPriority = document.createElement('div');
+            const todoPriority = document.createElement('td');
             todoPriority.textContent = todo.getPriority();
-            todoPriority.classList.add('todo-priority');
 
-            const divider = document.createElement('div');
-            divider.classList.add('divider');
+            const todoNotes = document.createElement('td');
+            todoNotes.textContent = todo.getNotes();
 
-            todoElement.appendChild(todoTitle);
-            todoElement.appendChild(todoDescription);
-            todoElement.appendChild(todoDueDate);
-            todoElement.appendChild(todoPriority);
+            tableRow.appendChild(todoTitle);
+            tableRow.appendChild(todoDescription);
+            tableRow.appendChild(todoDueDate);
+            tableRow.appendChild(todoPriority);
+            tableRow.appendChild(todoNotes);
 
-            todoWrapper.appendChild(todoElement);
-            todoList.appendChild(todoWrapper);
-            if (todoIndex + 1 !== todos.length)
-                todoList.appendChild(divider);
+            todoList.appendChild(tableRow);
         }
-        todoListWrapper.appendChild(todoList);
+        tableWrapper.appendChild(todoList);
+        todoListWrapper.appendChild(tableWrapper);
 
         titleArea.appendChild(titleLabel);
         titleArea.appendChild(titleBox);
