@@ -2,8 +2,6 @@ import { format } from 'date-fns';
 
 import './style.css';
 import { TodoItem, TodoProject } from './todoObjects';
-// import { clearContent, loadProjects, loadProject, currProjectIndex } from './contentLoaders';
-// import { clearButtonBar, loadNewProjectButton, loadNewTodoButton } from './buttonBarLoaders';
 
 import cancelSVG from './cancel.svg';
 
