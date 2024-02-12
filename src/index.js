@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 
 import './style.css';
-import { TodoItem, TodoProject } from './todoObjects';
+import { TodoProject } from './todoObjects';
 
 import cancelSVG from './cancel.svg';
 
