@@ -4,4 +4,4 @@ The purpose of this project is to practice JS OOP principles along with the SOLI
 
 The application can create projects, create tasks within projects, and sort tasks by different criteria.
 
-![todo-list](https://github.com/Varulli/todo-list/assets/120419874/03bc01eb-cdf7-4f18-939c-55dc67d8e4e0)
+![todo_list_real_2](https://github.com/Varulli/todo-list/assets/120419874/90e5c61c-ba3a-4bf2-b232-a2a70905a294)
